@@ -8,6 +8,7 @@ dotenv.config();
 const app = express();
 app.use(cors());
 app.use(express.json());
+const PORT = process.env.PORT || 3000;
 
 mongoose.connect(process.env.DATABASE_URL)
 .then(() => { console.log("DB connection successfully") })
@@ -50,4 +51,9 @@ app.get('/:shortUrl', async (req, res) => {
     }
 })
 
-app.listen(3000, () => { console.log("Server is listening on 3000")})
+app.get('/test', (req, res) => {
+    res.json({ message: "Backend is working!" });
+});
+
+
+app.listen(PORT, () => { console.log(`Server is listening on ${PORT}`) });
