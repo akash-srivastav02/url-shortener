@@ -1,4 +1,14 @@
 {
-    "version": 2
-}
+    "version": 2,
+    "routes": [
+      {
+        "src": "/api/short",
+        "dest": "/index.js"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/index.js"
+      }
+    ]
+  }
   
