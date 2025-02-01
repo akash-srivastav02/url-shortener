@@ -10,6 +10,26 @@ app.use(cors());
 app.use(express.json());
 const PORT = process.env.PORT || 3000;
 
+let cachedDb = null;
+
+const connectDB = async () => {
+  if (cachedDb) return cachedDb;
+  try {
+    const client = await mongoose.connect(process.env.DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    cachedDb = client;
+    console.log("DB connected successfully");
+    return client;
+  } catch (err) {
+    console.error("DB connection failed", err);
+    throw err;
+  }
+};
+
+connectDB();
+
 mongoose.connect(process.env.DATABASE_URL)
 .then(() => { console.log("DB connection successfully") })
 .catch((err) => { console.log("FAILEd DB", err) })
@@ -56,4 +76,5 @@ app.get('/test', (req, res) => {
 });
 
 
-app.listen(PORT, () => { console.log(`Server is listening on ${PORT}`) });
+//app.listen(PORT, () => { console.log(`Server is listening on ${PORT}`) });
+module.exports = app;
