@@ -8,11 +8,19 @@ dotenv.config();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+//app.use(express.json());
+app.use(express.json({ strict: false }));
 
-mongoose.connect(process.env.DATABASE_URL)
-.then(() => { console.log("DB connection successfully") })
-.catch((err) => { console.log("FAILEd DB", err) })
+
+// mongoose.connect(process.env.DATABASE_URL)
+// .then(() => { console.log("DB connection successfully") })
+// .catch((err) => { console.log("FAILEd DB", err) })
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+})
+.then(() => console.log("✅ DB connection successful!"))
+.catch(err => console.error("❌ DB Connection Failed:", err));
 
 const urlSchema = new mongoose.Schema({
     originalUrl:String,
@@ -53,7 +61,7 @@ app.get('/:shortUrl', async (req, res) => {
 
 // every 5 min
 setInterval(() => {
-    axios.get('http://localhost:3000')
+    axios.get('https://url-shortener-vd2p.onrender.com')
         .then(() => console.log("✅ Server pinged successfully!"))
         .catch(err => console.error("❌ Ping failed:", err.message))
 }, 5 * 60 * 1000)
