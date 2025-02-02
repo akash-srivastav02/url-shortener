@@ -3,13 +3,17 @@ import mongoose from 'mongoose'
 import cors from 'cors'
 import { nanoid } from 'nanoid';
 import dotenv from 'dotenv'
+import axios from 'axios'
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-mongoose.connect(process.env.DATABASE_URL)
+mongoose.connect(process.env.DATABASE_URL, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
 .then(() => { console.log("DB connection successfully") })
 .catch((err) => { console.log("FAILEd DB", err) })
 
@@ -49,5 +53,12 @@ app.get('/:shortUrl', async (req, res) => {
         res.status(500).json({message: "Server Error"})
     }
 })
+
+// every 5 min
+setInterval(() => {
+    axios.get('http://localhost:3000')
+        .then(() => console.log("✅ Server pinged successfully!"))
+        .catch(err => console.error("❌ Ping failed:", err.message))
+}, 5 * 60 * 1000)
 
 app.listen(3000, () => { console.log("Server is listening on 3000")})
