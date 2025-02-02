@@ -12,15 +12,15 @@ app.use(cors());
 app.use(express.json({ strict: false }));
 
 
-// mongoose.connect(process.env.DATABASE_URL)
-// .then(() => { console.log("DB connection successfully") })
-// .catch((err) => { console.log("FAILEd DB", err) })
-mongoose.connect(process.env.DATABASE_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-})
-.then(() => console.log("✅ DB connection successful!"))
-.catch(err => console.error("❌ DB Connection Failed:", err));
+mongoose.connect(process.env.DATABASE_URL)
+.then(() => { console.log("DB connection successfully") })
+.catch((err) => { console.log("FAILEd DB", err) })
+// mongoose.connect(process.env.DATABASE_URL, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true
+// })
+// .then(() => console.log("✅ DB connection successful!"))
+// .catch(err => console.error("❌ DB Connection Failed:", err));
 
 const urlSchema = new mongoose.Schema({
     originalUrl:String,
